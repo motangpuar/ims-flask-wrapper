@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=nnag
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "54321:5432"
+  redis:
+    image: redis:alpine
+    ports:
+      - "63791:6379"
