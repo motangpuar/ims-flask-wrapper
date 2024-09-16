@@ -1,8 +1,24 @@
 version: "3"
 
 services:
+  ims-serrvice:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app:Z
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=server.py  # Adjust this to your main Flask file
+      - PYTHONUNBUFFERED=0
+      #command: sleep infinity
+    command: flask run --host=0.0.0.0 --port=5000 --debug
+
   postgres:
+    container_name: postgres
     image: postgres:9.6
+    volumes:
+      - ./scripts/create-db.sql:/docker-entrypoint-initdb.d/create-db.sql:Z
     environment:
       - POSTGRES_USER=nnag
       - POSTGRES_PASSWORD=password

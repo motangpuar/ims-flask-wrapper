@@ -9,6 +9,8 @@ class db_handler():
 
     def __init__(self):
         self.conn = None
+        self.cur = None
+        #self.cur.execute = None
 
     def connect(self, host, port):
         self.conn = psycopg2.connect(
@@ -20,13 +22,20 @@ class db_handler():
                 )
         self.cur = self.conn.cursor()
 
-    def create_table(self, table):
+    def create_table(self):
         self.cur.execute('DROP TABLE IF EXISTS users')
         self.cur.execute('CREATE TABLE users (ID serial PRIMARY KEY,'
                                         'uname varchar (150) NOT NULL,'
                                         'password varchar (150) NOT NULL,'
                                         'permission varchar (150) NOT NULL);'
                                         )
+        self.conn.commit()
+
+        self.cur.execute('SELECT * from users')
+        data = self.cur.fetchall()
+
+        return data
+
     def insert_user(self, name, password, permission):
         self.cur.execute('INSERT INTO users (uname, password, permission)'
                     'VALUES (%s, %s, %s)',
